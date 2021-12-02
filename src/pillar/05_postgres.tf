@@ -100,7 +100,7 @@ module "postgres_snet" {
 }
 
 module "postgres" {
-  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.0"
+  source = "git::https://github.com/pagopa/azurerm.git//postgresql_server?ref=v2.0.3"
 
   name                = format("%s-postgres", local.project)
   location            = azurerm_resource_group.data_rg.location
@@ -139,17 +139,13 @@ module "postgres" {
   tags = var.tags
 }
 
-data "azuread_group" "postgres" {
-  display_name = module.postgres.name
-}
-
 resource "azurerm_key_vault_access_policy" "postgres" {
   count = var.postgres_byok_enabled ? 1 : 0
 
   key_vault_id            = data.azurerm_key_vault.kv.id
   tenant_id               = data.azurerm_client_config.current.tenant_id
-  object_id               = data.azuread_group.postgres.object_id
-  key_permissions         = ["Get", "WrapKey", "UnwrapKey", ]
+  object_id               = module.postgres.principal_id
+  key_permissions         = ["Get", "WrapKey", "UnwrapKey"]
   secret_permissions      = []
   certificate_permissions = []
   storage_permissions     = []
@@ -171,6 +167,8 @@ resource "azurerm_key_vault_key" "postgres" {
     "verify",
     "wrapKey",
   ]
+
+  tags = var.tags
 }
 
 resource "azurerm_postgresql_server_key" "postgres" {

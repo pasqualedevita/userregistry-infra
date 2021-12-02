@@ -10,7 +10,6 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.3.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.76.0 |
 
 ## Modules
@@ -19,7 +18,9 @@
 |------|--------|---------|
 | <a name="module_azdoa_li"></a> [azdoa\_li](#module\_azdoa\_li) | git::https://github.com/pagopa/azurerm.git//azure_devops_agent | v1.0.57 |
 | <a name="module_azdoa_snet"></a> [azdoa\_snet](#module\_azdoa\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.3 |
-| <a name="module_postgres"></a> [postgres](#module\_postgres) | git::https://github.com/pagopa/azurerm.git//postgresql_server | v2.0.0 |
+| <a name="module_cosmosdb"></a> [cosmosdb](#module\_cosmosdb) | /Users/pasqualedevita/Documents/github/azurerm/cosmosdb | n/a |
+| <a name="module_cosmosdb_snet"></a> [cosmosdb\_snet](#module\_cosmosdb\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.58 |
+| <a name="module_postgres"></a> [postgres](#module\_postgres) | /Users/pasqualedevita/Documents/github/azurerm/postgresql_server | n/a |
 | <a name="module_postgres_snet"></a> [postgres\_snet](#module\_postgres\_snet) | git::https://github.com/pagopa/azurerm.git//subnet | v1.0.84 |
 | <a name="module_vnet"></a> [vnet](#module\_vnet) | git::https://github.com/pagopa/azurerm.git//virtual_network | v1.0.51 |
 
@@ -39,8 +40,10 @@
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_postgresql_server_key.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/postgresql_server_key) | resource |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone.privatelink_cassandra_cosmos_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.privatelink_postgres_database_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.internal_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.privatelink_cassandra_cosmos_azure_com_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.privatelink_postgres_database_azure_com_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/private_dns_zone_virtual_network_link) | resource |
 | [azurerm_public_ip.aks_outbound](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/public_ip) | resource |
 | [azurerm_public_ip.appgateway_public_ip](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/public_ip) | resource |
@@ -48,7 +51,6 @@
 | [azurerm_resource_group.data_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.monitor_rg](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
 | [azurerm_resource_group.rg_vnet](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/resources/resource_group) | resource |
-| [azuread_group.postgres](https://registry.terraform.io/providers/hashicorp/azuread/2.3.0/docs/data-sources/group) | data source |
 | [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/client_config) | data source |
 | [azurerm_key_vault.kv](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault) | data source |
 | [azurerm_key_vault_secret.monitor_notification_email](https://registry.terraform.io/providers/hashicorp/azurerm/2.76.0/docs/data-sources/key_vault_secret) | data source |
@@ -63,8 +65,17 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_aks_num_outbound_ips"></a> [aks\_num\_outbound\_ips](#input\_aks\_num\_outbound\_ips) | How many outbound ips allocate for AKS cluster | `number` | `1` | no |
 | <a name="input_cidr_subnet_azdoa"></a> [cidr\_subnet\_azdoa](#input\_cidr\_subnet\_azdoa) | Azure DevOps agent network address space. | `list(string)` | n/a | yes |
-| <a name="input_cidr_subnet_postgres"></a> [cidr\_subnet\_postgres](#input\_cidr\_subnet\_postgres) | Database network address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_cosmosdb"></a> [cidr\_subnet\_cosmosdb](#input\_cidr\_subnet\_cosmosdb) | Cosmosdb network address space. | `list(string)` | n/a | yes |
+| <a name="input_cidr_subnet_postgres"></a> [cidr\_subnet\_postgres](#input\_cidr\_subnet\_postgres) | Postgres network address space. | `list(string)` | n/a | yes |
 | <a name="input_cidr_vnet"></a> [cidr\_vnet](#input\_cidr\_vnet) | Virtual network address space. | `list(string)` | n/a | yes |
+| <a name="input_cosmosdb_additional_geo_locations"></a> [cosmosdb\_additional\_geo\_locations](#input\_cosmosdb\_additional\_geo\_locations) | The name of the Azure region to host replicated data and the priority to apply starting from 1. Not used when cosmosdb\_enable\_serverless | <pre>list(object({<br>    location          = string<br>    failover_priority = number<br>  }))</pre> | `[]` | no |
+| <a name="input_cosmosdb_consistency_policy"></a> [cosmosdb\_consistency\_policy](#input\_cosmosdb\_consistency\_policy) | n/a | <pre>object({<br>    consistency_level       = string<br>    max_interval_in_seconds = number<br>    max_staleness_prefix    = number<br>  })</pre> | <pre>{<br>  "consistency_level": "Session",<br>  "max_interval_in_seconds": null,<br>  "max_staleness_prefix": null<br>}</pre> | no |
+| <a name="input_cosmosdb_enable_autoscaling"></a> [cosmosdb\_enable\_autoscaling](#input\_cosmosdb\_enable\_autoscaling) | It will enable autoscaling mode. If true, cosmosdb\_throughput must be unset | `bool` | `false` | no |
+| <a name="input_cosmosdb_enable_serverless"></a> [cosmosdb\_enable\_serverless](#input\_cosmosdb\_enable\_serverless) | It will enable serverless mode. If true, cosmosdb\_throughput and cosmosdb\_enable\_autoscaling will be ignored | `bool` | `false` | no |
+| <a name="input_cosmosdb_max_throughput"></a> [cosmosdb\_max\_throughput](#input\_cosmosdb\_max\_throughput) | The maximum throughput of the MongoDB database (RU/s). Must be between 4,000 and 1,000,000. Must be set in increments of 1,000. Conflicts with throughput | `number` | `4000` | no |
+| <a name="input_cosmosdb_offer_type"></a> [cosmosdb\_offer\_type](#input\_cosmosdb\_offer\_type) | Specifies the Offer Type to use for this CosmosDB Account - currently this can only be set to Standard | `string` | `"Standard"` | no |
+| <a name="input_cosmosdb_public_network_access_enabled"></a> [cosmosdb\_public\_network\_access\_enabled](#input\_cosmosdb\_public\_network\_access\_enabled) | Whether or not public network access is allowed for this CosmosDB account | `bool` | `false` | no |
+| <a name="input_cosmosdb_throughput"></a> [cosmosdb\_throughput](#input\_cosmosdb\_throughput) | The throughput of the MongoDB database (RU/s). Must be set in increments of 100. The minimum value is 400. This must be set upon database creation otherwise it cannot be updated without a manual terraform destroy-apply. | `number` | `400` | no |
 | <a name="input_dns_default_ttl_sec"></a> [dns\_default\_ttl\_sec](#input\_dns\_default\_ttl\_sec) | value | `number` | `3600` | no |
 | <a name="input_dns_zone_prefix"></a> [dns\_zone\_prefix](#input\_dns\_zone\_prefix) | The dns subdomain. | `string` | `null` | no |
 | <a name="input_enable_azdoa"></a> [enable\_azdoa](#input\_enable\_azdoa) | Enable Azure DevOps agent. | `bool` | n/a | yes |

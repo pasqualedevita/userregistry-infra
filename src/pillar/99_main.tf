@@ -2,7 +2,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "= 2.76.0"
+      version = "= 2.87.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -21,6 +21,8 @@ provider "azurerm" {
 data "azurerm_subscription" "current" {}
 
 data "azurerm_client_config" "current" {}
+
+data "azuread_application_published_app_ids" "well_known" {}
 
 locals {
   project = format("%s-%s", var.prefix, var.env_short)
