@@ -22,6 +22,7 @@ cidr_vnet              = ["10.1.0.0/16"]
 cidr_subnet_appgateway = ["10.1.128.0/24"]
 cidr_subnet_postgres   = ["10.1.129.0/24"]
 cidr_subnet_azdoa      = ["10.1.130.0/24"]
+cidr_subnet_cosmosdb   = ["10.1.131.0/24"]
 cidr_subnet_apim       = ["10.1.136.0/24"]
 cidr_subnet_k8s        = ["10.1.0.0/17"]
 
@@ -53,6 +54,12 @@ postgres_network_rules = {
   allow_access_to_azure_services = false
 }
 
+# cosmosdb
+cosmosdb_byok_enabled             = true
+cosmosdb_first_setup_byok         = true
+cosmosdb_extra_capabilities       = ["EnableServerless"]
+cosmosdb_private_endpoint_enabled = true
+
 #
 # 🗺 APIM
 #
@@ -63,7 +70,7 @@ apim_api_internal_certificate_name = "api-internal-uat-userregistry-pagopa-it"
 #
 # ⛴ AKS
 #
-aks_private_cluster_enabled = false
+aks_private_cluster_enabled = true
 aks_alerts_enabled          = false
 # This is the k8s ingress controller ip. It must be in the aks subnet range.
 reverse_proxy_ip        = "10.1.0.250"
