@@ -264,3 +264,7 @@ variable "aks_num_outbound_ips" {
   default     = 1
   description = "How many outbound ips allocate for AKS cluster"
 }
+
+locals {
+  acr_docker_registry_name = replace("${local.project}-acr", "-", "")
+}

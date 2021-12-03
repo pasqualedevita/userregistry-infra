@@ -78,9 +78,3 @@ aks_enable_auto_scaling = false
 aks_node_min_count      = null
 aks_node_max_count      = null
 aks_vm_size             = "Standard_B4ms"
-
-#
-# 📦 ACR Docker registry
-#
-docker_registry_rg_name = "usrreg-d-docker-rg"
-docker_registry_name    = "usrregdacr"

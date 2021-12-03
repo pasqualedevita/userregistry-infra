@@ -10,6 +10,7 @@ tags = {
   Source      = "https://github.com/pagopa/userregistry-infra"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
+
 lock_enable = true
 
 # 🔐 key vault
@@ -26,8 +27,8 @@ cidr_subnet_apim       = ["10.1.136.0/24"]
 cidr_subnet_k8s        = ["10.1.0.0/17"]
 
 # dns
-external_domain = "pagopa.it"
 dns_zone_prefix = "userregistry"
+external_domain = "pagopa.it"
 
 # azure devops
 enable_azdoa        = true
@@ -73,8 +74,3 @@ aks_node_min_count      = 1
 aks_node_max_count      = 3
 aks_vm_size             = "Standard_D4s_v3"
 
-#
-# 📦 ACR Docker registry
-#
-docker_registry_rg_name = "usrreg-p-docker-rg"
-docker_registry_name    = "usrregpacr"

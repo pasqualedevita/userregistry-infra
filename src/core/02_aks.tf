@@ -6,8 +6,8 @@ data "azurerm_public_ip" "aks_outbound" {
 }
 
 data "azurerm_container_registry" "acr" {
-  name                = var.docker_registry_name
-  resource_group_name = var.docker_registry_rg_name
+  name                = local.acr_docker_registry_name
+  resource_group_name = local.acr_docker_registry_rg_name
 }
 
 #--------------------------------------------------------------------------------------------------
@@ -33,6 +33,7 @@ module "k8s_snet" {
   ]
 }
 
+#tfsec:ignore:AZU008
 module "aks" {
   source = "git::https://github.com/pagopa/azurerm.git//kubernetes_cluster?ref=v2.0.3"
 
@@ -97,6 +98,9 @@ resource "azurerm_role_assignment" "aks_to_acr" {
 
 resource "azurerm_key_vault_secret" "aks_apiserver_url" {
   name         = "aks-apiserver-url"
-  value        = module.aks.fqdn
+  value        = "https://${module.aks.fqdn}:${var.aks_api_server_port}"
   key_vault_id = data.azurerm_key_vault.kv.id
+
+  expiration_date = "2022-12-31T00:00:00Z"
+  content_type    = "aks_apiserver_url"
 }

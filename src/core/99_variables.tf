@@ -94,13 +94,13 @@ variable "dns_default_ttl_sec" {
 variable "external_domain" {
   type        = string
   default     = null
-  description = "Domain for delegation"
+  description = "Domain for delegation (e.g. pagopa.it)"
 }
 
 variable "dns_zone_prefix" {
   type        = string
   default     = null
-  description = "The dns subdomain."
+  description = "The dns subdomain. (e.g. dev.userregistry)"
 }
 
 # ❇️ api gateway
@@ -243,6 +243,12 @@ variable "aks_sku_tier" {
   type        = string
   description = "The SKU Tier that should be used for this Kubernetes Cluster."
   default     = "Free"
+}
+
+variable "aks_api_server_port" {
+  type        = number
+  description = "Api server port"
+  default     = 443
 }
 
 variable "reverse_proxy_ip" {
@@ -480,26 +486,17 @@ variable "aks_alerts_enabled" {
 }
 
 #
-# 📦 Docker registry ACR
-#
-variable "docker_registry_name" {
-  type        = string
-  description = "ACR docker registry name"
-}
-
-variable "docker_registry_rg_name" {
-  type        = string
-  description = "ACR docker registry, resource group name"
-}
-
-#
 # Locals
 #
 locals {
+
+  acr_docker_registry_name = replace("${local.project}-acr", "-", "")
+  acr_docker_registry_rg_name = "${local.project}-docker-rg"
+
   monitor_rg                      = format("%s-monitor-rg", local.project)
   monitor_action_group_slack_name = "SlackPagoPA"
   monitor_action_group_email_name = "PagoPA"
 
   # api.internal.*.userregistry.pagopa.it
-  api_internal_domain = format("api.internal.%s.%s", var.dns_zone_prefix, var.external_domain)
+  api_internal_domain = "api.internal.${var.dns_zone_prefix}.${var.external_domain}"
 }

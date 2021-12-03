@@ -4,6 +4,13 @@ data "azurerm_key_vault_secret" "apim_publisher_email" {
   key_vault_id = data.azurerm_key_vault.kv.id
 }
 
+# 🧵 DNS ZONE
+data "azurerm_private_dns_zone" "internal" {
+  # name                = join(".", ["internal", var.dns_zone_prefix, var.external_domain])
+  name                = "internal.${var.dns_zone_prefix}.${var.external_domain}"
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+}
+
 #--------------------------------------------------------------------------------------------------
 
 resource "azurerm_resource_group" "rg_api" {
@@ -88,34 +95,31 @@ resource "azurerm_key_vault_access_policy" "api_management_policy" {
   storage_permissions     = []
 }
 
-# #
-# # 🏷 custom domain
-# #
-# resource "azurerm_api_management_custom_domain" "api_custom_domain" {
-#   api_management_id = module.apim.id
+#
+# 🏷 custom domain
+#
+resource "azurerm_api_management_custom_domain" "api_custom_domain" {
+  api_management_id = module.apim.id
 
-#   proxy {
-#     host_name = local.api_internal_domain
-#     key_vault_id = replace(
-#       data.azurerm_key_vault_certificate.apim_internal.secret_id,
-#       "/${data.azurerm_key_vault_certificate.apim_internal.version}",
-#       ""
-#     )
-#   }
-# }
+  proxy {
+    host_name = local.api_internal_domain
+    key_vault_id = replace(
+      data.azurerm_key_vault_certificate.apim_internal.secret_id,
+      "/${data.azurerm_key_vault_certificate.apim_internal.version}",
+      ""
+    )
+  }
+}
 
-# data "azurerm_private_dns_zone" "internal" {
-#   name                = join(".", ["internal", var.dns_zone_prefix, var.external_domain])
-#   resource_group_name = data.azurerm_resource_group.rg_vnet.name
-# }
+# api.internal.*.userregistry.pagopa.it
+resource "azurerm_private_dns_a_record" "api_internal" {
 
-# # api.internal.*.userregistry.pagopa.it
-# resource "azurerm_private_dns_a_record" "api_internal" {
-#   name                = "api"
-#   zone_name           = data.azurerm_private_dns_zone.internal.name
-#   resource_group_name = data.azurerm_resource_group.rg_vnet.name
-#   ttl                 = var.dns_default_ttl_sec
-#   records             = module.apim.*.private_ip_addresses[0]
+  name                = "api"
+  records             = module.apim.*.private_ip_addresses[0]
+  ttl                 = var.dns_default_ttl_sec
 
-#   tags = var.tags
-# }
+  zone_name           = data.azurerm_private_dns_zone.internal.name
+  resource_group_name = data.azurerm_resource_group.rg_vnet.name
+
+  tags = var.tags
+}
