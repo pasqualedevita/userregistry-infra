@@ -114,9 +114,9 @@ resource "azurerm_api_management_custom_domain" "api_custom_domain" {
 # api.internal.*.userregistry.pagopa.it
 resource "azurerm_private_dns_a_record" "api_internal" {
 
-  name                = "api"
-  records             = module.apim.*.private_ip_addresses[0]
-  ttl                 = var.dns_default_ttl_sec
+  name    = "api"
+  records = module.apim.*.private_ip_addresses[0]
+  ttl     = var.dns_default_ttl_sec
 
   zone_name           = data.azurerm_private_dns_zone.internal.name
   resource_group_name = data.azurerm_resource_group.rg_vnet.name

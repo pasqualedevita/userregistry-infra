@@ -265,6 +265,15 @@ variable "aks_num_outbound_ips" {
   description = "How many outbound ips allocate for AKS cluster"
 }
 
+#
+# ⛴ VPN
+#
+variable "vpn_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable vpn gateway"
+}
+
 locals {
   acr_docker_registry_name = replace("${local.project}-acr", "-", "")
 }

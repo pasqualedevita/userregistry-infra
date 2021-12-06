@@ -82,6 +82,16 @@ variable "cidr_subnet_k8s" {
   description = "Subnet cluster kubernetes."
 }
 
+variable "cidr_subnet_vpn" {
+  type        = list(string)
+  description = "VPN network address space."
+}
+
+variable "cidr_subnet_dns_forwarder" {
+  type        = list(string)
+  description = "DNS Forwarder network address space."
+}
+
 #
 # 📇 dns
 #
@@ -175,6 +185,19 @@ variable "apim_sku" {
 variable "apim_api_internal_certificate_name" {
   type        = string
   description = "KeyVault certificate name"
+}
+
+## VPN ##
+variable "vpn_sku" {
+  type        = string
+  default     = "VpnGw1"
+  description = "VPN Gateway SKU"
+}
+
+variable "vpn_enabled" {
+  type        = bool
+  default     = false
+  description = "Enable vpn gateway"
 }
 
 #
@@ -490,7 +513,7 @@ variable "aks_alerts_enabled" {
 #
 locals {
 
-  acr_docker_registry_name = replace("${local.project}-acr", "-", "")
+  acr_docker_registry_name    = replace("${local.project}-acr", "-", "")
   acr_docker_registry_rg_name = "${local.project}-docker-rg"
 
   monitor_rg                      = format("%s-monitor-rg", local.project)

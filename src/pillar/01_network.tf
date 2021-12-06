@@ -41,3 +41,26 @@ resource "azurerm_public_ip" "aks_outbound" {
 
   tags = var.tags
 }
+
+#
+# 🗂 VPN public IP
+#
+
+resource "random_string" "vpn_dns" {
+  length  = 6
+  special = false
+  upper   = false
+}
+
+resource "azurerm_public_ip" "vpn_gw" {
+  count               = var.vpn_enabled ? 1 : 0
+  name                = format("%s-vpn-gw-pip", local.project)
+  location            = azurerm_resource_group.rg_vnet.location
+  resource_group_name = azurerm_resource_group.rg_vnet.name
+
+  allocation_method = "Dynamic"
+  domain_name_label = format("%sgw%s", lower(replace(format("%s-vpn-gw-pip", local.project), "/[[:^alnum:]]/", "")), random_string.vpn_dns.result)
+  sku               = "Basic"
+
+  tags = var.tags
+}
