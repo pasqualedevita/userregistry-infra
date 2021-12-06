@@ -12,3 +12,7 @@ rbac_namespaces_for_deployer_binding = ["usrreg"]
 api_gateway_url = "https://api.uat.userregistry.pagopa.it"
 
 # configs/secrets
+configmaps_uservice-user-registry-management = {
+  JAVA_OPTS                                         = "-javaagent:/applicationinsights-agent.jar"
+  APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL = "OFF"
+}

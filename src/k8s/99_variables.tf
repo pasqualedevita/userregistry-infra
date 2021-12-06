@@ -95,11 +95,17 @@ variable "nginx_helm_version" {
 
 
 # # configs/secrets
+variable "configmaps_uservice-user-registry-management" {
+  type = map(string)
+}
 
 #
 # 🀄️ LOCALS
 #
 locals {
-  project                  = "${var.prefix}-${var.env_short}"
-  public_ip_resource_group = "${var.prefix}-${var.env_short}-vnet-rg"
+  project                         = "${var.prefix}-${var.env_short}"
+  public_ip_resource_group        = "${var.prefix}-${var.env_short}-vnet-rg"
+  key_vault_id                    = "${data.azurerm_subscription.current.id}/resourceGroups/${var.key_vault_rg_name}/providers/Microsoft.KeyVault/vaults/${var.key_vault_name}"
+  postgres_hostname               = "${format("%s-postgresql", local.project)}.postgres.database.azure.com"
+  appinsights_instrumentation_key = format("InstrumentationKey=%s", module.key_vault_secrets_query.values["appinsights-instrumentation-key"].value)
 }

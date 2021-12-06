@@ -141,6 +141,16 @@ module "postgres" {
   tags = var.tags
 }
 
+resource "azurerm_postgresql_database" "usrreg_db" {
+  count = var.postgres_byok_enabled ? 1 : 0
+
+  name                = "usrreg"
+  resource_group_name = azurerm_resource_group.data_rg.name
+  server_name         = format("%s-postgres", local.project)
+  charset             = "UTF8"
+  collation           = "English_United States.1252"
+}
+
 resource "azurerm_key_vault_access_policy" "postgres" {
   count = var.postgres_byok_enabled ? 1 : 0
 
