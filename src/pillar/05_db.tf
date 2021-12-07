@@ -142,7 +142,6 @@ module "postgres" {
 }
 
 resource "azurerm_postgresql_database" "usrreg_db" {
-  count = var.postgres_byok_enabled ? 1 : 0
 
   name                = "usrreg"
   resource_group_name = azurerm_resource_group.data_rg.name

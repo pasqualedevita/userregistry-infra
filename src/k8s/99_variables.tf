@@ -74,8 +74,14 @@ variable "ingress_replica_count" {
   type = string
 }
 
-variable "ingress_load_balancer_ip" {
-  type = string
+variable "ingress_load_balancer_public_ip" {
+  type        = string
+  description = "Ingress load balance public ip"
+}
+
+variable "ingress_load_balancer_private_ip" {
+  type        = string
+  description = "Ingress load balance private IP to create during helm installation"
 }
 
 variable "default_service_port" {
@@ -103,9 +109,17 @@ variable "configmaps_uservice-user-registry-management" {
 # 🀄️ LOCALS
 #
 locals {
-  project                         = "${var.prefix}-${var.env_short}"
-  public_ip_resource_group        = "${var.prefix}-${var.env_short}-vnet-rg"
+  project                  = "${var.prefix}-${var.env_short}"
+  public_ip_resource_group_name = "${var.prefix}-${var.env_short}-vnet-rg"
+
+  load_balancer_ip = var.aks_private_cluster_enabled ? var.ingress_load_balancer_private_ip : var.ingress_load_balancer_public_ip
+
   key_vault_id                    = "${data.azurerm_subscription.current.id}/resourceGroups/${var.key_vault_rg_name}/providers/Microsoft.KeyVault/vaults/${var.key_vault_name}"
-  postgres_hostname               = "${format("%s-postgresql", local.project)}.postgres.database.azure.com"
-  appinsights_instrumentation_key = format("InstrumentationKey=%s", module.key_vault_secrets_query.values["appinsights-instrumentation-key"].value)
+  
+  appinsights_instrumentation_key = "InstrumentationKey=${module.key_vault_secrets_query.values["appinsights-instrumentation-key"].value}"
+
+  # 🗄 Postgresql
+  postgres_hostname               = "${local.project}-postgresql.postgres.database.azure.com"
+  postgres_user_registry_connection_username = "USRREG_REGISTRY_USER@${local.postgres_hostname}"
+  postgres_user_registry_connection_username_password = module.key_vault_secrets_query.values["postgres-user-registry-user-password"].value
 }

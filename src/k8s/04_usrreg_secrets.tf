@@ -1,4 +1,4 @@
-resource "kubernetes_secret" "selc-application-insights" {
+resource "kubernetes_secret" "usrreg-application-insights" {
   metadata {
     name      = "application-insights"
     namespace = kubernetes_namespace.usrreg.metadata[0].name
@@ -36,8 +36,8 @@ resource "kubernetes_secret" "uservice-user-registry-management" {
   }
 
   data = {
-    POSTGRES_USR = format("%s@%s", "USRREG_REGISTRY_USER", local.postgres_hostname)
-    POSTGRES_PSW = module.key_vault_secrets_query.values["postgres-user-registry-user-password"].value
+    POSTGRES_USR = local.postgres_user_registry_connection_username
+    POSTGRES_PSW = local.postgres_user_registry_connection_username_password
   }
 
   type = "Opaque"

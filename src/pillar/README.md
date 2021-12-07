@@ -44,6 +44,7 @@
 | [azurerm_log_analytics_workspace.log_analytics_workspace](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/log_analytics_workspace) | resource |
 | [azurerm_monitor_action_group.email](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/monitor_action_group) | resource |
 | [azurerm_monitor_action_group.slack](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/monitor_action_group) | resource |
+| [azurerm_postgresql_database.usrreg_db](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/postgresql_database) | resource |
 | [azurerm_postgresql_server_key.postgres](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/postgresql_server_key) | resource |
 | [azurerm_private_dns_zone.internal](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone.privatelink_cassandra_cosmos_azure_com](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/private_dns_zone) | resource |

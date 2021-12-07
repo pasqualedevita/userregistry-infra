@@ -7,7 +7,7 @@ resource "kubernetes_config_map" "uservice-user-registry-management" {
   data = merge({
     APPLICATIONINSIGHTS_ROLE_NAME = "uservice-user-registry-management"
     POSTGRES_SCHEMA               = "user_registry"
-  },
-  var.configmaps_uservice-user-registry-management
+    },
+    var.configmaps_uservice-user-registry-management
   )
 }
