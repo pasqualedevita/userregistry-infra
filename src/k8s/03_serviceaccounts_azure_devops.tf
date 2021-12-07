@@ -17,6 +17,8 @@ data "kubernetes_secret" "azure_devops_secret" {
   }
 }
 
+#--------------------------------------------------------------------------------------------------
+
 #tfsec:ignore:AZU023
 resource "azurerm_key_vault_secret" "azure_devops_sa_token" {
   depends_on   = [kubernetes_service_account.azure_devops]
@@ -55,6 +57,13 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     resources  = ["deployments"]
     verbs      = ["get", "list", "watch", "create", "update", "patch", "delete"]
   }
+
+  rule {
+    api_groups = ["networking.k8s.io"]
+    resources  = ["ingresses"]
+    verbs      = ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
+  }
+
 }
 
 resource "kubernetes_role_binding" "deployer_binding" {
