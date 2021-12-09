@@ -15,7 +15,7 @@
   },
   "servers": [
     {
-      "url": "https://${host}/pdnd-interop-uservice-user-registry-management/${version}",
+      "url": "https://${host}/${basePath}/${version}",
       "description": "User registry service containing PII information"
     }
   ],

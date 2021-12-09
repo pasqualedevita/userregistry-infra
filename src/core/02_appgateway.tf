@@ -21,7 +21,7 @@ module "appgateway_snet" {
 
 ## Application gateway ##
 module "app_gw" {
-  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v1.0.90"
+  source = "git::https://github.com/pagopa/azurerm.git//app_gateway?ref=v2.0.9"
 
   resource_group_name = data.azurerm_resource_group.rg_vnet.name
   location            = data.azurerm_resource_group.rg_vnet.location
@@ -43,10 +43,10 @@ module "app_gw" {
 
     apim = {
       protocol                    = "Https"
-      host                        = "api.internal.dev.userregistry.pagopa.it"
+      host                        = format("api.internal.%s.%s", var.dns_zone_prefix, var.external_domain)
       port                        = 443
       ip_addresses                = null # with null value use fqdns
-      fqdns                       = ["api.internal.dev.userregistry.pagopa.it"]
+      fqdns                       = [format("api.internal.%s.%s", var.dns_zone_prefix, var.external_domain)]
       probe                       = "/status-0123456789abcdef"
       probe_name                  = "probe-apim"
       request_timeout             = 2

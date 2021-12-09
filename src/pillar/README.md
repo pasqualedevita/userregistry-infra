@@ -32,6 +32,8 @@
 | Name | Type |
 |------|------|
 | [azurerm_application_insights.application_insights](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/application_insights) | resource |
+| [azurerm_dns_a_record.api_userregistry_pagopa_it](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/dns_a_record) | resource |
+| [azurerm_dns_caa_record.caa](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/dns_caa_record) | resource |
 | [azurerm_dns_ns_record.dev_it_ns](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_ns_record.uat_it_ns](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/dns_ns_record) | resource |
 | [azurerm_dns_zone.public](https://registry.terraform.io/providers/hashicorp/azurerm/2.86.0/docs/resources/dns_zone) | resource |
