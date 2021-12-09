@@ -98,7 +98,7 @@ resource "azurerm_role_assignment" "aks_to_acr" {
 
 resource "azurerm_key_vault_secret" "aks_apiserver_url" {
   name         = "aks-apiserver-url"
-  value        = "https://${module.aks.fqdn}:${var.aks_api_server_port}"
+  value        = "https://${var.aks_private_cluster_enabled ? module.aks.private_fqdn : module.aks.fqdn}:${var.aks_api_server_port}"
   key_vault_id = data.azurerm_key_vault.kv.id
 
   expiration_date = "2022-12-31T00:00:00Z"

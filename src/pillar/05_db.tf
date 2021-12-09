@@ -120,7 +120,7 @@ module "postgres" {
     enabled              = var.postgres_private_endpoint_enabled
     virtual_network_id   = azurerm_resource_group.rg_vnet.id
     subnet_id            = module.postgres_snet.id
-    private_dns_zone_ids = [azurerm_private_dns_zone.privatelink_postgres_database_azure_com.id]
+    private_dns_zone_ids = var.postgres_private_endpoint_enabled ? [azurerm_private_dns_zone.privatelink_postgres_database_azure_com[0].id] : []
   }
 
   alerts_enabled                = var.postgres_alerts_enabled
@@ -215,7 +215,7 @@ module "cosmosdb" {
   public_network_access_enabled     = var.env_short == "p" ? false : var.cosmosdb_public_network_access_enabled
   private_endpoint_enabled          = var.cosmosdb_private_endpoint_enabled
   subnet_id                         = module.cosmosdb_snet.id
-  private_dns_zone_ids              = [azurerm_private_dns_zone.privatelink_cassandra_cosmos_azure_com.id]
+  private_dns_zone_ids              = var.cosmosdb_private_endpoint_enabled ? [azurerm_private_dns_zone.privatelink_cassandra_cosmos_azure_com[0].id] : []
   is_virtual_network_filter_enabled = true
 
   consistency_policy = var.cosmosdb_consistency_policy

@@ -63,7 +63,6 @@ resource "kubernetes_cluster_role" "cluster_deployer" {
     resources  = ["ingresses"]
     verbs      = ["create", "delete", "deletecollection", "get", "list", "patch", "update", "watch"]
   }
-
 }
 
 resource "kubernetes_role_binding" "deployer_binding" {
