@@ -37,7 +37,7 @@ module "apim_snet" {
 ###########################
 
 module "apim" {
-  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=INFRA-316-azurerm-apim-redis-not-mandatory"
+  source = "git::https://github.com/pagopa/azurerm.git//api_management?ref=v2.0.18"
 
   name = format("%s-apim", local.project)
 
@@ -50,33 +50,16 @@ module "apim" {
   sku_name             = var.apim_sku
   virtual_network_type = "Internal"
 
-  #   redis_connection_string = module.redis.primary_connection_string
-  #   redis_cache_id          = module.redis.id
+  redis_connection_string = null
+  redis_cache_id          = null
 
   # This enables the Username and Password Identity Provider
   sign_up_enabled = false
 
-  lock_enable = var.lock_enable
-
-  # sign_up_terms_of_service = {
-  #   consent_required = false
-  #   enabled          = false
-  #   text             = ""
-  # }
-
+  lock_enable                              = var.lock_enable
   application_insights_instrumentation_key = data.azurerm_application_insights.application_insights.instrumentation_key
 
-  #   xml_content = templatefile("./api/base_policy.tpl", {
-  #     origins = local.origins.base
-  #   })
-
   tags = var.tags
-
-  #   depends_on = [
-  #     azurerm_application_insights.application_insights,
-  #     module.redis
-  #   ]
-
 }
 
 #

@@ -2,7 +2,7 @@ terraform {
   required_version = ">=1.0.6"
   required_providers {
     azurerm = {
-      version = "= 2.86.0"
+      version = "= 2.87.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -37,7 +37,11 @@ provider "helm" {
 }
 
 provider "azurerm" {
-  features {}
+  features {
+    key_vault {
+      purge_soft_delete_on_destroy = false
+    }
+  }
 }
 
 data "azurerm_subscription" "current" {}

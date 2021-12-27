@@ -88,7 +88,9 @@ aks_max_pods            = 100
 aks_enable_auto_scaling = true
 aks_node_min_count      = 1
 aks_node_max_count      = 3
-aks_vm_size             = "Standard_D4s_v3"
+aks_vm_size             = "Standard_D4s_v4"
+aks_availability_zones  = [1, 2, 3]
+aks_sku_tier            = "Paid"
 
 #
 # ⛴ VPN
