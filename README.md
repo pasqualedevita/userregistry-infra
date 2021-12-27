@@ -1,6 +1,23 @@
-# terraform-infrastructure-template
+# userregistry-infra
 
-Terraform template repository for infrastructures projects
+UserRegistry infra project
+
+## Flow of installation
+
+1. Run terraform on ´pillar´ folder, to generate all the resources that are pillar for other resources
+2. Run on ´core´ folder this command, to generate the secrets mandatory for pipelines
+´´´bash
+sh terraform.sh apply [dev|uat|prod] -target azurerm_key_vault_secret.aks_apiserver_url
+´´´
+3. Generate all the pipelines usign project <https://github.com/pagopa/userregistry-devops>
+  
+    1. Launch the pipelines to allow the generation of the certificate, mandatory for apim and app gateway
+
+4. Check that the new certificates are created inside the keyvault
+
+5. Run terraform on ´core´ folder to complete all the resources
+
+6. (Only via VPN for UAT and PROD) Run terraform on ´k8s´ folder to setup kubernetes cluster
 
 ## Requirements
 
@@ -41,7 +58,7 @@ terraform.sh apply [dev|uat|prod]
 ## Terraform lock.hcl
 
 We have both developers who work with your Terraform configuration on their Linux, macOS or Windows workstations and automated systems that apply the configuration while running on Linux.
-https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target-platforms
+<https://www.terraform.io/docs/cli/commands/providers/lock.html#specifying-target-platforms>
 
 So we need to specify this in terraform lock providers:
 
@@ -61,7 +78,7 @@ terraform providers lock \
 
 Check your code before commit.
 
-https://github.com/antonbabenko/pre-commit-terraform#how-to-install
+<https://github.com/antonbabenko/pre-commit-terraform#how-to-install>
 
 ```sh
 pre-commit run -a
