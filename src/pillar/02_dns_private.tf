@@ -13,6 +13,9 @@ resource "azurerm_private_dns_zone_virtual_network_link" "internal_vnet" {
   virtual_network_id    = module.vnet.id
 }
 
+#
+# 🛢 Postgresql
+#
 resource "azurerm_private_dns_zone" "privatelink_postgres_database_azure_com" {
   count               = var.postgres_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.postgres.database.azure.com"
@@ -32,6 +35,10 @@ resource "azurerm_private_dns_zone_virtual_network_link" "privatelink_postgres_d
   tags = var.tags
 }
 
+
+#
+# Cassandra
+#
 resource "azurerm_private_dns_zone" "privatelink_cassandra_cosmos_azure_com" {
   count               = var.cosmosdb_private_endpoint_enabled ? 1 : 0
   name                = "privatelink.cassandra.cosmos.azure.com"

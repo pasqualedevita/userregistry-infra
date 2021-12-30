@@ -63,3 +63,45 @@ resource "azurerm_monitor_action_group" "slack" {
 
   tags = var.tags
 }
+
+#
+# Web Test
+#
+## web availability test
+locals {
+
+  test_urls = [
+    {
+      host                 = trimsuffix(azurerm_dns_a_record.api_userregistry_pagopa_it.fqdn, "."),
+      path                 = "/user-registry-management/v1/status",
+      expected_http_status = 401
+    },
+    ## CDN custom domains ##
+    # NO CDNs
+  ]
+
+}
+
+module "web_test_api" {
+  for_each = { for v in local.test_urls : v.host => v if v != null }
+  source   = "git::https://github.com/pagopa/azurerm.git//application_insights_web_test_preview?ref=v2.0.18"
+
+  subscription_id                   = data.azurerm_subscription.current.subscription_id
+  name                              = "${each.value.host}-test"
+  location                          = azurerm_resource_group.monitor_rg.location
+  resource_group                    = azurerm_resource_group.monitor_rg.name
+  application_insight_name          = azurerm_application_insights.application_insights.name
+  request_url                       = "https://${each.value.host}${each.value.path}"
+  ssl_cert_remaining_lifetime_check = 7
+  expected_http_status              = each.value.expected_http_status
+
+  actions = [
+    {
+      action_group_id = azurerm_monitor_action_group.email.id,
+    },
+    {
+      action_group_id = azurerm_monitor_action_group.slack.id,
+    },
+  ]
+
+}

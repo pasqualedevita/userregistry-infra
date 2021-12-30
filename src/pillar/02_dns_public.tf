@@ -59,6 +59,10 @@ resource "azurerm_dns_caa_record" "caa" {
   tags = var.tags
 }
 
+#
+# 🅰️ DNS A records
+#
+
 # application gateway records
 # api.*.userregistry.pagopa.it
 resource "azurerm_dns_a_record" "api_userregistry_pagopa_it" {
