@@ -19,11 +19,9 @@ repos:
       - id: detect-private-key
   ## terraform
   - repo: git://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.50.0
+    rev: v1.64.0
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
-        args:
-          - tfvars hcl --output-file terraform.tfvars.model .
       - id: terraform_tfsec
       - id: terraform_validate

@@ -1,3 +1,5 @@
+[![Static Analysis](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml)
+
 # userregistry-infra
 
 UserRegistry infra project
@@ -6,12 +8,12 @@ UserRegistry infra project
 
 1. Run terraform on ´pillar´ folder, to generate all the resources that are pillar for other resources
 2. Run on ´core´ folder this command, to generate the secrets mandatory for pipelines
-´´´bash
-sh terraform.sh apply [dev|uat|prod] -target azurerm_key_vault_secret.aks_apiserver_url
-´´´
+   ´´´bash
+   sh terraform.sh apply [dev|uat|prod] -target azurerm_key_vault_secret.aks_apiserver_url
+   ´´´
 3. Generate all the pipelines usign project <https://github.com/pagopa/userregistry-devops>
-  
-    1. Launch the pipelines to allow the generation of the certificate, mandatory for apim and app gateway
+
+   1. Launch the pipelines to allow the generation of the certificate, mandatory for apim and app gateway
 
 4. Check that the new certificates are created inside the keyvault
 
