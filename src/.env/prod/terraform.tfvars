@@ -51,10 +51,10 @@ enable_azdoa        = true
 enable_iac_pipeline = true
 
 # ❇️ app_gateway
-app_gateway_sku_name             = "Standard_v2" # TODO change to WAF_v2
-app_gateway_sku_tier             = "Standard_v2" # TODO change to WAF_v2
-app_gateway_alerts_enabled       = false         # TODO change to true
-app_gateway_waf_enabled          = false         # TODO change to true
+app_gateway_sku_name             = "WAF_v2"
+app_gateway_sku_tier             = "WAF_v2"
+app_gateway_alerts_enabled       = true
+app_gateway_waf_enabled          = true
 app_gateway_api_certificate_name = "api-userregistry-pagopa-it"
 
 # postgres
