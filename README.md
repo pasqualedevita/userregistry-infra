@@ -1,3 +1,7 @@
+# :warning: Archived repository :warning:
+
+This repository is archived. New contents has been migrated in https://github.com/pagopa/pdv-tokenizer-infra and https://github.com/pagopa/pdv-user-registry-infra
+
 [![Static Analysis](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml/badge.svg?branch=main)](https://github.com/pagopa/userregistry-infra/actions/workflows/static_analysis.yml)
 
 # userregistry-infra
